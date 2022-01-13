@@ -1,6 +1,7 @@
 /** @param {NS} ns **/
 
 import { crackServer } from "/scripts/lib/crack-server.js";
+import { scripts } from "/scripts/lib/constants.js";
 
 export async function main(ns) {
 	ns.disableLog("scp");
@@ -22,13 +23,13 @@ export async function main(ns) {
 				!ns.fileExists("pwned.txt", srv.host)
 			) {
 				// Copy hack self and kick it off on every server we can
-				await ns.scp("/scripts/hack-server.js", srv.host);
+				await ns.scp(scripts["pilfer"].file, srv.host);
 
 				let threads = Math.floor(
-					srv.maxRam / ns.getScriptRam("/scripts/hack-server.js")
+					srv.maxRam / ns.getScriptRam(scripts["pilfer"].file)
 				);
 
-				ns.exec("/scripts/hack-server.js", srv.host, threads, srv.host);
+				ns.exec(scripts["pilfer"].file, srv.host, threads, srv.host);
 
 				// Flag the server as pwned.
 				await ns.scp("pwned.txt", "home", srv.host);

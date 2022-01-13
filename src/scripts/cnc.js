@@ -9,7 +9,7 @@ import { scripts } from "/scripts/lib/constants.js";
 export async function main(ns) {
 	const action = ns.args[0];
 	const target = ns.args[1];
-	const args = ns.args.slice(2);
+	const funcArgs = ns.args.slice(2);
 
 	switch (action) {
 		case "clean":
@@ -18,16 +18,10 @@ export async function main(ns) {
 		case "spider":
 			await ns.run("/scripts/spider.js");
 			break;
-		// case "weaken":
-		// 	await weaken(ns, target);
-		// 	break;
-		// case "weakenall":
-		// 	await weakenAll(ns);
-		// 	break;
 		case "exec":
 			const execServer = target;
-			const scriptName = args[0];
-			const targetServer = args[1];
+			const scriptName = funcArgs[0];
+			const targetServer = funcArgs[1];
 
 			if (!(scriptName in scripts)) {
 				ns.tprint(`Invalid Script ${scriptName}`);

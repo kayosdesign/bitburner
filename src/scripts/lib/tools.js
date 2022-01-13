@@ -26,9 +26,8 @@ async function clean(ns, target) {
 	ns.killall(target);
 	ns.rm("pwned.txt", target);
 
-	for (let scriptIdx in scripts) {
-		let script = scripts[scriptIdx].file;
-		ns.rm(script, target);
+	for (const script in scripts) {
+		ns.rm(scripts[script].file, target);
 	}
 }
 
