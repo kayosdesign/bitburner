@@ -29,8 +29,8 @@ export async function main(ns) {
 			const scriptName = args[0];
 			const targetServer = args[1];
 
-			if (!scriptName in scripts) {
-				ns.tprint(`Invalid Script ${script}`);
+			if (!(scriptName in scripts)) {
+				ns.tprint(`Invalid Script ${scriptName}`);
 				return;
 			}
 			const scriptFile = scripts[scriptName].file;
