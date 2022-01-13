@@ -3,6 +3,12 @@
 import { crackServer } from "/scripts/lib/crack-server.js";
 
 export async function main(ns) {
+	ns.disableLog("scp");
+	ns.disableLog("exec");
+	ns.disableLog("sleep");
+	ns.disableLog("fileExists");
+	ns.disableLog("getScriptRam");
+
 	const srvList = JSON.parse(ns.read("server-list.txt"));
 	let pwn = true;
 
@@ -10,15 +16,11 @@ export async function main(ns) {
 		for (let srvIdx in srvList) {
 			let srv = srvList[srvIdx];
 
-			if (await crackServer(ns, srv)) {
-				// 		if (srv.ram >= 32 && srv.maxMoney > 0) {
-				// 			for (let script in autoScripts) {
-				// 				ns.tprint(`COPY ${autoScripts[script]} to ${srv.host}`);
-				// 				await ns.scp(autoScripts[script], srv.host);
-				// 			}
-				// 			ns.exec("/scripts/auto/spider.js", srv.host);
-				// 		}
-
+			// only try cracking a server if  we haven't pwned it already.
+			if (
+				(await crackServer(ns, srv)) &&
+				!ns.fileExists("pwned.txt", srv.host)
+			) {
 				// Copy hack self and kick it off on every server we can
 				await ns.scp("/scripts/hack-server.js", srv.host);
 
@@ -30,10 +32,10 @@ export async function main(ns) {
 
 				// Flag the server as pwned.
 				await ns.scp("pwned.txt", "home", srv.host);
-				ns.tprint(`PWNED ${srv.host}`);
+				ns.print(`PWNED ${srv.host}`);
 			}
 		}
-		pwn = false;
-		// await ns.sleep(500);
+		//pwn = false;
+		await ns.sleep(500);
 	}
 }
