@@ -26,6 +26,9 @@ export async function main(ns) {
 		case "killall":
 			await killAll(ns, target);
 			break;
+		case "hacknodes":
+			await ns.run("/scripts/hacknodes.js");
+			break;
 		default:
 			ns.tprint("Invalid action");
 			break;

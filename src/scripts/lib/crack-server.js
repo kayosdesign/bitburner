@@ -4,6 +4,14 @@ import { programs } from "/scripts/lib/constants.js";
 import { softwareCount } from "/scripts/lib/tools.js";
 
 export async function crackServer(ns, srv) {
+	ns.disableLog("getHackingLevel");
+	ns.disableLog("nuke");
+	ns.disableLog("brutessh");
+	ns.disableLog("ftpcrack");
+	ns.disableLog("relaysmtp");
+	ns.disableLog("httpworm");
+	ns.disableLog("sqlinject");
+
 	let curHackLvl = ns.getHackingLevel();
 	let curSoftware = softwareCount(ns);
 
@@ -11,7 +19,7 @@ export async function crackServer(ns, srv) {
 	let log = false;
 
 	if (curHackLvl < srv.hackReq || curSoftware < srv.portReq) {
-		ns.tprint(`Can't hack - ${srv.host}`);
+		if (log) ns.tprint(`Can't hack - ${srv.host}`);
 		return false; // We can't hack it so don't try
 	}
 
