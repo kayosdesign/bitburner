@@ -6,6 +6,8 @@ export async function main(ns) {
 	let servers = {};
 	let toSearch = [hn];
 
+	await ns.rm("server-list.txt");
+
 	while (toSearch.length > 0) {
 		let target = toSearch.shift(); // pick our current target and remove it from list to search
 
@@ -23,5 +25,5 @@ export async function main(ns) {
 
 	delete servers["home"]; // We don't need to talk to home
 
-	await ns.write("spider-servers.txt", JSON.stringify(servers), "w"); // Store our list of servers permanently.
+	await ns.write("server-list.txt", JSON.stringify(servers), "w"); // Store our list of servers permanently.
 }

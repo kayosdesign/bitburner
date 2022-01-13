@@ -7,7 +7,7 @@ export const serverInfo = (ns, host) => {
 		maxMoney: ns.getServerMaxMoney(host),
 		growth: ns.getServerGrowth(host),
 		minSec: ns.getServerMinSecurityLevel(host),
-		ram: ns.getServerRam(host)[0],
+		maxRam: ns.getServerMaxRam(host),
 		root: ns.hasRootAccess(host),
 	};
 };
