@@ -1,8 +1,15 @@
-import { cleanServers, killAll } from "/scripts/lib/tools.js";
+import {
+	cleanServers,
+	remoteExecute,
+	killRunningScripts,
+} from "/scripts/lib/tools.js";
+
+import { scripts } from "/scripts/lib/constants.js";
 
 export async function main(ns) {
 	const action = ns.args[0];
 	const target = ns.args[1];
+	const args = ns.args.slice(2);
 
 	switch (action) {
 		case "clean":
@@ -17,14 +24,24 @@ export async function main(ns) {
 		// case "weakenall":
 		// 	await weakenAll(ns);
 		// 	break;
-		// case "hack":
-		// 	await hackSingle(ns, target);
-		// 	break;
+		case "exec":
+			const execServer = target;
+			const scriptName = args[0];
+			const targetServer = args[1];
+
+			if (!scriptName in scripts) {
+				ns.tprint(`Invalid Script ${script}`);
+				return;
+			}
+			const scriptFile = scripts[scriptName].file;
+
+			await remoteExecute(ns, execServer, scriptFile, targetServer);
+			break;
 		case "pwnfound":
 			await ns.run("/scripts/pwn-found.js");
 			break;
-		case "killall":
-			await killAll(ns, target);
+		case "kill":
+			await killRunningScripts(ns, target);
 			break;
 		case "hacknodes":
 			await ns.run("/scripts/hacknodes.js");

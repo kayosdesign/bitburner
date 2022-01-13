@@ -1,7 +1,6 @@
 /** @param {NS} ns **/
 
 import { programs } from "/scripts/lib/constants.js";
-import { softwareCount } from "/scripts/lib/tools.js";
 
 export async function crackServer(ns, srv) {
 	ns.disableLog("getHackingLevel");
@@ -12,11 +11,13 @@ export async function crackServer(ns, srv) {
 	ns.disableLog("httpworm");
 	ns.disableLog("sqlinject");
 
-	let curHackLvl = ns.getHackingLevel();
-	let curSoftware = softwareCount(ns);
+	const curHackLvl = ns.getHackingLevel();
+	const curSoftware = programs.filter((progName) =>
+		ns.fileExists(progName, "home")
+	).length;
 
-	let debug = true;
-	let log = false;
+	const debug = true;
+	const log = false;
 
 	if (curHackLvl < srv.hackReq || curSoftware < srv.portReq) {
 		if (log) ns.tprint(`Can't hack - ${srv.host}`);

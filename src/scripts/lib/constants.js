@@ -7,4 +7,4 @@ export const programs = [
 	"SQLInject.exe",
 ];
 
-export const scripts = ["/scripts/hack-self.js", "/scripts/hack-server.js"];
+export const scripts = { hack: { file: "/scripts/hack-server.js" } };
